@@ -3,3 +3,5 @@ Pillow
 pix2tex
 latex2sympy2
 sympy
+timm>=0.9.12
+transformers
