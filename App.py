@@ -8,8 +8,7 @@ st.title("Denklem çözücü")
 
 @st.cache_resource
 def modeli_yukle():
-    gecici_yol = "/tmp/pix2tex"
-    return LatexOCR(arguments={"config": gecici_yol, "checkpoint": gecici_yol})
+    return LatexOCR()
 
 AI = modeli_yukle()
 
