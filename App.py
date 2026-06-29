@@ -1,11 +1,15 @@
 import os
+os.environ["HOME"] = "/tmp"
+os.environ["XDG_CACHE_HOME"] = "/tmp"
+os.environ["XDG_CONFIG_HOME"] = "/tmp"
+
 import streamlit as st
 from PIL import Image
 from pix2tex.cli import LatexOCR
 from latex2sympy2 import latex2sympy
 import sympy
 
-os.environ["HOME"] = "/tmp"
+
 st.title("Denklem çözücü")
 
 
