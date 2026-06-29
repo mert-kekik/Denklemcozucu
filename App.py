@@ -4,7 +4,12 @@ from pix2tex.cli import LatexOCR
 from latex2sympy2 import latex2sympy
 import sympy
 st.title("Denklem çözücü")
-AI=LatexOCR()
+@st.cache_resource
+def modeli_yukle():
+    return LatexOCR()
+
+AI = modeli_yukle()
+
 photo=st.camera_input("denklemin fotoğrafını çekin")
 if photo is not None :
 	st.success("fotoğraf alındı")
