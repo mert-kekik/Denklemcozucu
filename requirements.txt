@@ -1,0 +1,5 @@
+streamlit
+Pillow
+pix2tex
+latex2sympy2
+sympy
