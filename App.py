@@ -1,43 +1,41 @@
 import os
-import streamlit as st
-from PIL import Image
-
-# İzin hatalarını aşmak için ortam yollarını /tmp dizinine yönlendiriyoruz
+# İzin hatalarını aşmak için en kritik ayarlar
 os.environ["HOME"] = "/tmp"
 os.environ["XDG_CACHE_HOME"] = "/tmp"
 os.environ["XDG_CONFIG_HOME"] = "/tmp"
 os.environ["PIX2TEX_CHECKPOINT_DIR"] = "/tmp/pix2tex"
 
-# Kütüphaneleri import ediyoruz
+import streamlit as st
+from PIL import Image
 from pix2tex.cli import LatexOCR
 from latex2sympy2 import latex2sympy
 import sympy
 
-st.title("Denklem çözücü")
+st.title("Denklem Çözücü")
 
 @st.cache_resource
 def modeli_yukle():
-    # Modelin varsayılan olarak /tmp dizinini kullanmasını sağlıyoruz
+    # Klasörü biz oluşturuyoruz, kütüphane oluşturmaya çalışıp hata almasın
+    os.makedirs("/tmp/pix2tex", exist_ok=True)
     return LatexOCR()
 
 AI = modeli_yukle()
 
-photo = st.camera_input("denklemin fotoğrafını çekin")
+photo = st.camera_input("Denklemin fotoğrafını çekin")
 
 if photo is not None:
     st.success("Fotoğraf alındı")
     st.image(photo)
     
-    # Görüntüyü işle ve metne çevir
-    edited_photo = Image.open(photo)
-    denklem_metni = AI(edited_photo)
-    
-    st.latex(denklem_metni)
-    
-    # Denklem çözme kısmı
     try:
+        edited_photo = Image.open(photo)
+        denklem_metni = AI(edited_photo)
+        st.latex(denklem_metni)
+        
+        # Matematiksel çözüm
         mat_ifade = latex2sympy(denklem_metni)
         cozum = sympy.solve(mat_ifade)
         st.success(f"Çözüm: {cozum}")
+        
     except Exception as e:
-        st.error("Denklem hatalı veya okunamadı, lütfen tekrar çekin.")
+        st.error("Denklem okunamadı veya çözülemedi. Lütfen net bir fotoğraf çekin.")
