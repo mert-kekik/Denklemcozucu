@@ -1,12 +1,15 @@
+import os
 import streamlit as st
 from PIL import Image
 from pix2tex.cli import LatexOCR
 from latex2sympy2 import latex2sympy
 import sympy
 st.title("Denklem çözücü")
+
 @st.cache_resource
 def modeli_yukle():
-    return LatexOCR()
+    gecici_yol = "/tmp/pix2tex"
+    return LatexOCR(arguments={"config": gecici_yol, "checkpoint": gecici_yol})
 
 AI = modeli_yukle()
 
